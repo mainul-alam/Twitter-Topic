@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> BASE </title>
+
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+              integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+              crossorigin="anonymous">
+
+
+
+        <a href="{% url 'home' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> HOME </a>
+        <a href="{% url 'new_topic' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> CREATE A NEW TOPIC </a>
+        <a href="{% url 'topics' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> TOPICS YOU CREATED </a>
+        <a href="{% url 'all_topics' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> ALL THE TOPICS </a>
+
+        <form method="post" action="{% url 'account_logout' %}" style="float: right; margin: 20px">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+
+            <button type="submit"> Log Out </button>
+        </form>
+
+
+
+            {% block content %}
+            {% endblock %}
+
+</head>
+<body>
+
+</body>
+</html>

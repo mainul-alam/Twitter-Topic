@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Topic: {{ topic.name }}</h3>
+    <p> Description: {{ topic.description }} </p>
+
+    <div>
+        <h3> :: Conversations :: </h3>
+
+        {% for c in comments %}
+            <li>
+                {{ c.get_comment }}
+
+                <p>
+                    Commented By: {{ c.user.first_name }} - AT : {{ c.created_at }}
+
+                <form action="{% url 'delete_comment' c.id %}" method="post">{% csrf_token %}
+                    <input type="submit" value="delete"/>
+                </form>
+
+                </p>
+            </li>
+        {% endfor %}
+    </div>
+
+    <div>
+        <form method="post" , action="{% url 'new_comment' %}">
+            {% csrf_token %}
+
+            <div>
+                {{ comment_form.topic_id }}
+            </div>
+
+            <div>
+                {{ comment_form.comment.errors }}
+                {{ comment_form.comment }}
+            </div>
+
+            <input type="submit" name="comment_btn" value="Add Comment"/>
+            <input type="submit" name="tweet_btn" value="Add Comment + Tweet"/>
+        </form>
+    </div>
+
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <button type="submit"> Log Out</button>
+    </form>
+
+{% endblock %}

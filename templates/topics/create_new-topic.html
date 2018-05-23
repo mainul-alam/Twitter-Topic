@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+        <h1>New topic</h1>
+
+        <div>
+            <form action="{% url 'new_topic' %}" method="post">
+                {% csrf_token %}
+            <div class="field">
+                {{ form.name.errors }}
+                {{ form.name }}
+            </div>
+            <div class="field">
+                {{ form.description.errors }}
+                {{ form.description }}
+            </div>
+
+                <input type="submit" value="SAVE" />
+            </form>
+        </div>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+      {% endif %}
+
+      <button type="submit"> Log Out </button>
+    </form>
+
+{% endblock %}

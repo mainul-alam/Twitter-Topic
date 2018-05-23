@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1> FOLLOWING ARE ALL THE TOPICS AVAILABLE TO DISCUSS </h1>
+
+
+
+          <div>
+            {% for topic in all_topics %}
+                <li>
+                    {{ topic.name}} <a href="{% url 'show_topic' topic.id %}"> Show topic</a>
+                    <form action="{% url 'subscribe_topic' topic.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Subscribe"/>
+                    </form>
+                </li>
+
+            {% endfor %}
+
+        </div>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+      {% endif %}
+
+      <button type="submit"> Log Out </button>
+    </form>
+
+{% endblock %}
+
+

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1> Subscribed Topics: </h1>
+
+    <ul>
+        {% for subscription in subscriptions %}
+            <li class="">
+                <a href="{% url 'show_topic' subscription.topic.id %}">
+                    {{ subscription.topic.name }}
+                </a>
+
+                <form action="{% url 'unsubscribe_topic' subscription.id %}" method="post">
+                        {% csrf_token %}
+                    <input type="submit" value="UnSubscribe"/>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h1> Following are your tweets </h1>
+
+
+    <div id="home_copy">
+        {{ homepage.homecopy|safe }}
+    </div>
+
+    <ul id="home_tweets">
+        {% for tweet in tweets %}
+            <li class="tweettext">{{ tweet.status }}</li>
+            <li class="tweettime">{{ tweet.date }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
