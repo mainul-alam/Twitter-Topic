@@ -98,21 +98,22 @@ WSGI_APPLICATION = 'TwitterProject.wsgi.application'
 
 DATABASES = {
 
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-  #   'default': {
-  #       'ENGINE': 'django.db.backends.mysql',
-  #       'NAME': 'TwitterProject',
-  #       'USER':'root',
-  #       'PASSWORD':'Gotyouon16121985',
-  #       'HOST':'localhost',
-  #       'PORT':'3306',
-  #       'OPTIONS': {
-  #         'autocommit': True,
-  #       },
-  # }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'TwitterProject',
+        'USER':'root',
+        'PASSWORD':'YOUR_PASSWORD',
+        'HOST':'localhost',
+        'PORT':'3306',
+        'OPTIONS': {
+          'autocommit': True,
+        },
+  }
 }
 
 
