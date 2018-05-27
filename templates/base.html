@@ -2,36 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> BASE </title>
+    {% block title %}<title> BASE </title>{% endblock %}
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-              integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-              crossorigin="anonymous">
 
-
-
-        <a href="{% url 'home' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> HOME </a>
-        <a href="{% url 'new_topic' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> CREATE A NEW TOPIC </a>
-        <a href="{% url 'topics' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> TOPICS YOU CREATED </a>
-        <a href="{% url 'all_topics' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> ALL THE TOPICS </a>
-
-        <form method="post" action="{% url 'account_logout' %}" style="float: right; margin: 20px">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">MY FIRST PROJECT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+             <a href="{% url 'home' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> HOME </a>   <a href="{% url 'new_topic' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> CREATE A NEW TOPIC </a>
+            <a href="{% url 'topics' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> TOPICS YOU CREATED </a>
+            <a href="{% url 'all_topics' %}"class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> ALL THE TOPICS </a>
+            </div>
+            <form method="post" action="{% url 'account_logout' %}" style="float: right; margin: 10px">
             {% csrf_token %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
             {% endif %}
 
-            <button type="submit"> Log Out </button>
-        </form>
+            <button type="submit" class="btn btn-danger"> LOG OUT </button>
+            </form>
+        </div>
+</nav>
 
 
 
-            {% block content %}
-            {% endblock %}
+ {% block content %}
 
-</head>
-<body>
+ {% endblock %}
 
 </body>
+
 </html>
+

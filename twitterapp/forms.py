@@ -10,5 +10,7 @@ class CommentForm(forms.Form):
     topic_id = forms.IntegerField(label='', widget=forms.HiddenInput)
     comment = forms.CharField(label='Comment', widget=forms.Textarea, max_length=50)
 
+class TweetForm(forms.Form):
+    tweet = forms.CharField(label='', max_length=250)
 
 

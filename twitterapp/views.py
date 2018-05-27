@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
-from .forms import TopicForm, CommentForm
+from .forms import TopicForm, CommentForm, TweetForm
 from .models import Topic, Comment, User,TwitterApi, Subscriber
 from allauth.socialaccount.models import SocialAccount, SocialToken
 import twitter
@@ -15,11 +15,29 @@ import twitter
 
 class HomePage(TemplateView):
 
+    tweet_form = TweetForm
+    initial = {'tweet': 'Make a new tweet'}
+
     def get(self, request, **kwargs):
-        subscriptions = Subscriber.objects.filter(user=request.user)
+
+        make_tweet = self.tweet_form(initial=self.initial)
+        subscriptions = Subscriber.objects.filter(user=request.user)  # explanations
 
         tweets = TwitterApi.getTweetsByUser(request.user)
-        return render(request, 'home.html', {'tweets': tweets, 'subscriptions': subscriptions})
+        return render(request, 'home.html', {'tweets': tweets, 'subscriptions': subscriptions, 'make_tweet': make_tweet})
+
+    def post(self, request):
+        make_tweet = self.tweet_form(request.POST)
+
+        if make_tweet.is_valid():  # what does this means ?
+            data = make_tweet.cleaned_data
+
+            TwitterApi.postTweet(request.user, data['tweet'])
+
+            return redirect('/home')
+        else:
+            return render(request, 'home.html', {'make_tweet': make_tweet})
+
 
 
 # TOPIC CREATING VIEW #
@@ -33,8 +51,8 @@ class TopicFormView(TemplateView):
         return render(request, 'topics/create_new-topic.html', {'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
+        form = self.form_class(request.POST)  # What does this mean ?
+        if form.is_valid():  # what does this means ?
             data = form.cleaned_data
             topic = Topic(name=data['name'], description=data['description'], user=request.user)
             topic.save()
@@ -67,9 +85,9 @@ class AllTopicView(TemplateView):
 
 class TopicConversationView(View):
     def get(self, request, **kwargs):
-        topic_id = kwargs['topic_id']
+        topic_id = kwargs['topic_id']    # what is happening here ?
         topic = Topic.objects.get(id=topic_id)
-        comments = Comment.objects.filter(topic_id=topic.id)
+        comments = Comment.objects.filter(topic_id=topic.id) # why filter ? not get ?
 
         comment_form = CommentForm(initial={'topic_id': topic.id, 'comment': 'New comment'})
         return render(request, 'topics/show_topic_details.html',

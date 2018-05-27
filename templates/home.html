@@ -1,35 +1,62 @@
 {% extends 'base.html' %}
+{% block title %}<title> HOME </title>{% endblock %}
 
 {% block content %}
-    <h1> Subscribed Topics: </h1>
-
-    <ul>
-        {% for subscription in subscriptions %}
-            <li class="">
-                <a href="{% url 'show_topic' subscription.topic.id %}">
-                    {{ subscription.topic.name }}
-                </a>
-
-                <form action="{% url 'unsubscribe_topic' subscription.id %}" method="post">
-                        {% csrf_token %}
-                    <input type="submit" value="UnSubscribe"/>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <h1> Following are your tweets </h1>
 
 
-    <div id="home_copy">
-        {{ homepage.homecopy|safe }}
-    </div>
+    <div class="row">
+        <div class="col-sm-4">
+              <h2> Subscribed Topics: </h2>
+                    {% for subscription in subscriptions %}
+                    <div class="list-group">
+                        <a href="{% url 'show_topic' subscription.topic.id %}" class="list-group-item">{{ subscription.topic.name }}
+                            <form action="{% url 'unsubscribe_topic' subscription.id %}"  method ="post" style="float: right; margin: 5px">
+                                {% csrf_token %}
+                                <input type="submit" value="UnSubscribe"/>
+                            </form>
+                        </a>
+                    </div>
+                     {% endfor %}
 
-    <ul id="home_tweets">
+        </div>
+  <div class="col-sm-4">
+
+      <h2> Following are your tweets </h2>
         {% for tweet in tweets %}
-            <li class="tweettext">{{ tweet.status }}</li>
-            <li class="tweettime">{{ tweet.date }}</li>
-        {% endfor %}
-    </ul>
+            <ul class="list-group">
+                <li class="list-group-item">{{ tweet.status }}<br><font size="2" color="DarkGray">{{ tweet.date }}</font></li>
+
+            </ul>
+         {% endfor %}
+
+
+
+  </div>
+  <div class="col-sm-4">
+
+  <h2> Make a TWEET </h2>
+
+        <div>
+            <form action="{% url 'home' %}" method="post">
+                {% csrf_token %}
+            <div class="field">
+                {{ make_tweet.errors }}
+                {{ make_tweet}}
+            </div>
+                <input type="submit" value="MAKE TWEET" style="float: inside; margin: auto"/>
+            </form>
+        </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
 
 {% endblock %}
