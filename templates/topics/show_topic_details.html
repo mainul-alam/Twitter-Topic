@@ -1,31 +1,45 @@
 {% extends 'base.html' %}
 {% block title %}<title> TOPIC DETAILS </title>{% endblock %}
 
+
+
+
+
 {% block content %}
 
-    <h3>Topic: {{ topic.name }}</h3>
-    <p> Description: {{ topic.description }} </p>
 
-    <div>
-        <h3> :: Conversations :: </h3>
 
-        {% for c in comments %}
-            <li>
-                {{ c.get_comment }}
 
-                <p>
-                    Commented By: {{ c.user.first_name }} - AT : {{ c.created_at }}
+<div class="mx-auto" style="width: 700px;">
 
-                <form action="{% url 'delete_comment' c.id %}" method="post">{% csrf_token %}
+
+
+  <div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action-secondary">
+    Topic Title: {{ topic.name }}<br />Description: {{ topic.description }}<br/> Created By: {{topic.user.first_name}} {{topic.user.last_name}}
+  </a>
+
+      {% for c in comments %}
+
+           <a href="#" class="list-group-item list-group-item-action">{{ c.get_comment }}<br/>
+               <small>Commented By: {{ c.user.first_name }} {{ c.user.last_name }} <br/>
+                   {{ c.created_at }}</small>
+
+
+                    <form action="{% url 'delete_comment' c.id %}" method="post"style="float: right; margin: 5px">{% csrf_token %}
                     <input type="submit" value="delete"/>
-                </form>
 
-                </p>
-            </li>
-        {% endfor %}
-    </div>
+                    </form>
+           </a>
 
-    <div>
+      {% endfor %}
+
+
+
+
+
+
+
         <form method="post" , action="{% url 'new_comment' %}">
             {% csrf_token %}
 
@@ -38,19 +52,18 @@
                 {{ comment_form.comment }}
             </div>
 
+            <div class="input-group">
+
             <input type="submit" name="comment_btn" value="Add Comment"/>
             <input type="submit" name="tweet_btn" value="Add Comment + Tweet"/>
         </form>
     </div>
 
+</div>
 
-    <form method="post" action="{% url 'account_logout' %}">
-        {% csrf_token %}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
 
-        <button type="submit"> Log Out</button>
-    </form>
+
+
+</div>
 
 {% endblock %}

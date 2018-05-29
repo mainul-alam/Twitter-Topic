@@ -43,7 +43,7 @@ class HomePage(TemplateView):
 # TOPIC CREATING VIEW #
 class TopicFormView(TemplateView):
     form_class = TopicForm
-    initial = {'name': 'New topic ..', 'description': 'description here..'}
+    initial = {'name': 'Topic Title...', 'description': 'description here..'}
 
     def get(self, request, **kwargs):
         form = self.form_class(initial=self.initial)
@@ -51,8 +51,8 @@ class TopicFormView(TemplateView):
         return render(request, 'topics/create_new-topic.html', {'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST)  # What does this mean ?
-        if form.is_valid():  # what does this means ?
+        form = self.form_class(request.POST) 
+        if form.is_valid():
             data = form.cleaned_data
             topic = Topic(name=data['name'], description=data['description'], user=request.user)
             topic.save()
@@ -77,7 +77,8 @@ class TopicView(TemplateView):
 class AllTopicView(TemplateView):
     def get(self, request, **kwargs):
         all_topics = Topic.objects.all()
-        return render(request, 'topics/all_topics.html', {'all_topics': all_topics})
+        subscribed_topic_ids = Subscriber.objects.filter(user=request.user).values_list('topic_id', flat=True)
+        return render(request, 'topics/all_topics.html', {'all_topics': all_topics, 'subscribed_topic_ids': subscribed_topic_ids})
 
 
 
@@ -85,13 +86,14 @@ class AllTopicView(TemplateView):
 
 class TopicConversationView(View):
     def get(self, request, **kwargs):
-        topic_id = kwargs['topic_id']    # what is happening here ?
+        topic_id = kwargs['topic_id']
         topic = Topic.objects.get(id=topic_id)
-        comments = Comment.objects.filter(topic_id=topic.id) # why filter ? not get ?
+        comments = Comment.objects.filter(topic_id=topic.id)
 
-        comment_form = CommentForm(initial={'topic_id': topic.id, 'comment': 'New comment'})
+        comment_form = CommentForm(initial={'topic_id': topic.id, 'comment': 'New comment....'})
+        user_id = request.user.id
         return render(request, 'topics/show_topic_details.html',
-                      {'topic': topic, 'comments': comments, 'comment_form': comment_form})
+                      {'topic': topic, 'comments': comments, 'comment_form': comment_form,'user_id':user_id})
 
 # COMMENT VIEW #
 
@@ -137,7 +139,7 @@ def subscribe_topic(request, pk):
     topic = Topic.objects.get(id=pk)
     subscription = Subscriber(topic=topic, user=request.user)
     subscription.save()
-    return redirect('topics')
+    return redirect('all_topics')
 
 def unsubscribe_topic(request, pk):
     subscription = Subscriber.objects.get(id=pk)

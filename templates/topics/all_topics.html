@@ -3,31 +3,32 @@
 
 {% block content %}
 
-  <h1> FOLLOWING ARE ALL THE TOPICS AVAILABLE TO DISCUSS: </h1>
+    <div class="mx-auto" style="width: 600px;">
+
+  <h3 align="center"> ALL THE TOPICS AVAILABLE </h3>
 
           <div>
             {% for topic in all_topics %}
-                <li>
-                    {{ topic.name}} <a href="{% url 'show_topic' topic.id %}"> Show topic</a>
-                    <form action="{% url 'subscribe_topic' topic.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="Subscribe"/>
-                    </form>
-                </li>
+                <div class="list-group">
+                <ul>
+                     <a href="{% url 'show_topic' topic.id %}" class="list-group-item"> {{ topic.name}}
+                         {% if topic.id in subscribed_topic_ids %}
+
+                         {% else %}
+                             <form action="{% url 'subscribe_topic' topic.id %}" method="post"style="float: right; margin: 5px">
+                                {% csrf_token %}
+                                <input type="submit" value="Subscribe"/>
+                            </form>
+                         {% endif %}
+                    </a>
+                </ul>
+                 </div>
 
             {% endfor %}
 
         </div>
 
-    <form method="post" action="{% url 'account_logout' %}">
-        {% csrf_token %}
-      {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-      {% endif %}
-
-      <button type="submit"> Log Out </button>
-    </form>
-
+    </div>
 {% endblock %}
 
 

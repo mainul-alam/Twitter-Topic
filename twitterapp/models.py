@@ -25,7 +25,7 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_comment(self):
-        if self.tweet_id:      # how ?
+        if self.tweet_id:
             tweet = TwitterApi.readTweet(self.user, self.tweet_id)
             return 'TWEET: ' + tweet.text
         else:
@@ -33,8 +33,8 @@ class Comment(models.Model):
 
 
 class TwitterApi:
-    def getTwitterApi(user):   # what is user ?
-        tokens = SocialToken.objects.get(account__user=user) #what objects.get means ?
+    def getTwitterApi(user):
+        tokens = SocialToken.objects.get(account__user=user)
         api = twitter.Api(consumer_key='2Be4eBRrGH0KlBGmYNVwKP2Az',
                           consumer_secret='QKGluMGNf3fABBiP4uvAiwaR2K5pJVtKzzksuYtk6kbmjNfKOP',
                           access_token_key=tokens.token,
@@ -55,9 +55,9 @@ class TwitterApi:
 
         try:
             api = TwitterApi.getTwitterApi(user)
-            user_id = api.VerifyCredentials().id       # what is this doing ?
+            user_id = api.VerifyCredentials().id
             latest = api.GetUserTimeline(user_id)
-            for tweet in latest:                     # how is this working ?
+            for tweet in latest:
                 status = tweet.text
                 tweet_date = tweet.created_at
                 tweets.append({'status': status, 'date': tweet_date})
